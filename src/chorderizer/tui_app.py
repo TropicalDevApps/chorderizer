@@ -642,6 +642,11 @@ class ChorderizerApp(App):
         table.add_columns(Translations.t("degree"), Translations.t("name"), Translations.t("midi"))
         table.cursor_type = "row"
 
+        # Jam mode tooltips
+        self.query_one("#jam-tonic-select").tooltip = Translations.t("tooltip_tonic")
+        self.query_one("#jam-scale-list").tooltip = Translations.t("tooltip_scale")
+        self.query_one("#jam-mood-list").tooltip = Translations.t("tooltip_mood")
+
         if not IconManager.has_nerd_font():
             self.log_status(
                 "[dim]Tip: Install a [bold cyan]Nerd Font[/] for a richer experience (icons & symbols).[/]",

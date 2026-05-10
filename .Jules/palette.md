@@ -1,4 +1,7 @@
-
 ## 2024-05-18 - Discovering Accessibility Power in Textual TUIs
 **Learning:** Textual TUI applications inherently lack standard web-like hover affordances for accessibility, making complex panels like the Chorderizer dashboard potentially difficult to parse for screen reader users or new users. However, we discovered that `tooltip` attributes are a powerful, universally supported prop across Textual interactive widgets (`Select`, `RadioSet`, `Button`, `DataTable`), providing vital contextual guidance.
 **Action:** Always leverage `tooltip` attributes on interactive elements in TUI dashboard layouts to provide inline assistance, especially for domain-specific controls (like musical theory selections) where the UI layout must remain compact.
+
+## 2026-05-09 - Consistent Tooltips across TUI Views
+**Learning:** In complex TUI applications with multiple views (like a 'compose' mode vs a 'jam' mode), accessibility features like tooltips can easily be overlooked in secondary views. We observed that while tooltips were meticulously added to the Compose view, the Jam mode's identical inputs lacked this guidance, leading to an inconsistent and potentially frustrating experience for users relying on screen reader hints or visual tooltips.
+**Action:** Audit all views within a TUI application to ensure consistent application of `tooltip` attributes for similar UI elements across the entire interface, regardless of whether they are in primary or secondary modes.
