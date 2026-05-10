@@ -12,3 +12,7 @@
 **Vulnerability:** Raw exception strings (e.g. `except ValueError as e: print(f"...{e}")`) were directly exposed to end users via CLI output.
 **Learning:** Returning or printing exact system exceptions to the user UI interface can unintentionally leak sensitive system paths, execution states, or dependency logic details.
 **Prevention:** Catch the exception, securely log the detailed information using `logging.error(f"...{e}")` for internal monitoring, and display a safe, generalized error message to the end user.
+## 2026-05-08 - Fixed Silent Exception Handling and Stack Trace Leakage
+**Vulnerability:** Found `try-except-pass` blocks that silently ignored JSON configuration loading and saving failures (CWE-703, B110, S110). Also found unhandled exception stack traces being leaked to standard output on launch failures.
+**Learning:** Silent exception handling hides configuration failure states and potentially malicious activity. Leaking stack traces by default exposes application internals to end users.
+**Prevention:** Always log exceptions instead of silently passing them. Use feature flags (like `--debug`) to conditionally expose stack traces in production environments, displaying generic, safe error messages otherwise.

@@ -149,16 +149,16 @@ class ConfigManager:
             try:
                 with open(self.config_path) as f:
                     return json.load(f)
-            except Exception:
-                pass
+            except Exception as e:
+                logging.warning(f"Failed to load config: {e}")
         return {"theme": "chromatic-pro", "mouse_enabled": True, "advanced_mode": False}
 
     def save(self, settings: Dict[str, Any]):
         try:
             with open(self.config_path, "w") as f:
                 json.dump(settings, f, indent=4)
-        except Exception:
-            pass
+        except Exception as e:
+            logging.error(f"Failed to save config: {e}")
 
 
 class ThemePalette(ModalScreen):

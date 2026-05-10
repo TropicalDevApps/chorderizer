@@ -54,7 +54,8 @@ def run_modern_tui():
         import traceback
 
         render_error(f"Failed to launch dashboard: {e}")
-        print(traceback.format_exc())
+        if "--debug" in sys.argv:
+            print(traceback.format_exc())
         sys.exit(1)
     return True
 
