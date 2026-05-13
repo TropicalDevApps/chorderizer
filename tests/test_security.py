@@ -54,6 +54,27 @@ class TestSecurity(unittest.TestCase):
         expected = os.path.join(self.base_dir, "subdir", "my_song.mid")
         self.assertEqual(result, expected)
 
+    def test_sanitize_symlink_traversal(self):
+        # Using a symlink to escape base_dir should be blocked
+        import shutil
+        os.makedirs(os.path.join(self.base_dir, "subdir"), exist_ok=True)
+        symlink_path = os.path.join(self.base_dir, "subdir", "symlink")
+
+        # Create a symlink pointing outside base_dir, handling if it exists
+        try:
+            os.symlink("/", symlink_path)
+        except FileExistsError:
+            pass
+
+        try:
+            # The input path contains the symlink which escapes base_dir
+            result = _sanitize_midi_path("subdir/symlink/etc/passwd", self.default_path, self.base_dir)
+            self.assertEqual(result, self.default_path)
+        finally:
+            if os.path.islink(symlink_path):
+                os.unlink(symlink_path)
+            shutil.rmtree(os.path.join(self.base_dir, "subdir"))
+
 
 if __name__ == "__main__":
     unittest.main()
