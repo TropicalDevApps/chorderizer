@@ -54,6 +54,23 @@ class TestSecurity(unittest.TestCase):
         expected = os.path.join(self.base_dir, "subdir", "my_song.mid")
         self.assertEqual(result, expected)
 
+    @unittest.skipIf(os.name == "nt", "Symlinks require admin privileges on Windows")
+    def test_sanitize_symlink_traversal(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as temp_dir:
+            base_dir = os.path.join(temp_dir, "base")
+            os.makedirs(base_dir)
+            default_path = os.path.join(base_dir, "default.mid")
+
+            external_dir = os.path.join(temp_dir, "external")
+            os.makedirs(external_dir)
+
+            symlink_path = os.path.join(base_dir, "link")
+            os.symlink(external_dir, symlink_path)
+
+            result = _sanitize_midi_path("link/secret.mid", default_path, base_dir)
+            self.assertEqual(result, default_path, "Symlink path traversal bypass detected!")
+
 
 if __name__ == "__main__":
     unittest.main()

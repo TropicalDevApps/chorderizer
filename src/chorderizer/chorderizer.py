@@ -86,10 +86,10 @@ def _sanitize_path(path_input: str, default: str, base_dir: str) -> str:
         return default
 
     # Normalize the base directory path
-    base_dir = os.path.abspath(base_dir)
+    base_dir = os.path.realpath(os.path.abspath(base_dir))
 
     # Join and resolve the path
-    full_path = os.path.abspath(os.path.join(base_dir, path_input))
+    full_path = os.path.realpath(os.path.abspath(os.path.join(base_dir, path_input)))
 
     # Ensure the resolved path is within base_dir
     if not full_path.startswith(base_dir + os.sep) and full_path != base_dir:
